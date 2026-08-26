@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ken Rodriguez — Senior Microsoft 365 Administrator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F6F8;
+    --surface:#FFFFFF;
+    --ink:#14181F;
+    --muted:#5B6472;
+    --line:#E1E4E9;
+    --line-strong:#CBD1D9;
+    --blue:#3457D5;
+    --blue-dim:#EAEEFC;
+    --green:#1F9D55;
+    --green-dim:#E7F6ED;
+    --amber:#C7852A;
+    --amber-dim:#FBF0DF;
+    --console:#12161D;
+    --console-line:#262D39;
+    --radius:10px;
+    --maxw:1120px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;letter-spacing:-0.01em;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px;}
+  @media (max-width:640px){.wrap{padding:0 20px;}}
+
+  /* ---------- focus ---------- */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--blue);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  /* ---------- reveal on scroll ---------- */
+  .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+  @media (prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
+    *{scroll-behavior:auto !important;}
+  }
+
+  /* ---------- nav ---------- */
+  header.nav{
+    position:sticky;top:0;z-index:40;
+    background:rgba(245,246,248,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:var(--maxw);margin:0 auto;padding:16px 32px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .brand{
+    display:flex;align-items:center;gap:10px;
+    font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;
+  }
+  .brand .dot{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 0 3px var(--green-dim);
+  }
+  nav.links{display:flex;gap:28px;font-size:13.5px;color:var(--muted);}
+  nav.links a{transition:color .15s ease;}
+  nav.links a:hover{color:var(--ink);}
+  .nav-cta{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--ink);color:#fff;
+    padding:8px 14px;border-radius:7px;
+    font-size:13px;font-weight:500;
+    border:1px solid var(--ink);
+  }
+  @media (max-width:820px){ nav.links{display:none;} }
+
+  /* ---------- hero ---------- */
+  .hero{padding:88px 0 72px;}
+  .hero-grid{
+    display:grid;grid-template-columns:1.15fr 0.85fr;gap:56px;align-items:center;
+  }
+  @media (max-width:900px){ .hero-grid{grid-template-columns:1fr;gap:44px;} }
+
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.04em;
+    color:var(--blue);background:var(--blue-dim);
+    padding:5px 10px;border-radius:6px;
+    margin-bottom:20px;
+  }
+  .hero h1{font-size:46px;font-weight:700;line-height:1.08;margin-bottom:14px;}
+  @media (max-width:640px){ .hero h1{font-size:34px;} }
+  .hero .role{font-size:19px;color:var(--muted);font-weight:500;margin-bottom:18px;}
+  .hero .tagline{font-size:16px;color:var(--muted);max-width:46ch;margin-bottom:32px;}
+  .btn-row{display:flex;flex-wrap:wrap;gap:12px;}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:11px 18px;border-radius:8px;font-size:14px;font-weight:500;
+    border:1px solid var(--line-strong);
+    transition:transform .15s ease, border-color .15s ease, background .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn.primary{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .btn.primary:hover{background:#000;}
+  .btn.ghost{background:var(--surface);color:var(--ink);}
+  .btn.ghost:hover{border-color:var(--ink);}
+
+  /* ---- console panel (signature element) ---- */
+  .console{
+    background:var(--console);
+    border-radius:14px;
+    padding:22px 22px 18px;
+    color:#E7EAF0;
+    box-shadow:0 20px 50px -20px rgba(18,22,29,0.45);
+    border:1px solid var(--console-line);
+  }
+  .console-head{
+    display:flex;align-items:center;justify-content:space-between;
+    padding-bottom:14px;margin-bottom:16px;border-bottom:1px solid var(--console-line);
+  }
+  .console-head .title{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#9AA4B2;letter-spacing:.03em;}
+  .traffic{display:flex;gap:6px;}
+  .traffic span{width:8px;height:8px;border-radius:50%;background:#3A4252;}
+  .console-row{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:10px 0;border-bottom:1px dashed var(--console-line);
+    font-size:13.5px;
+  }
+  .console-row:last-of-type{border-bottom:none;}
+  .console-row .label{color:#9AA4B2;font-family:'IBM Plex Mono',monospace;font-size:12px;}
+  .console-row .val{font-family:'IBM Plex Mono',monospace;font-weight:500;color:#F2F4F7;}
+  .status-dot{
+    display:inline-block;width:7px;height:7px;border-radius:50%;
+    background:var(--green);margin-right:7px;
+    box-shadow:0 0 0 0 rgba(31,157,85,.55);
+    animation:pulse 2.2s infinite;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(31,157,85,.5);}
+    70%{box-shadow:0 0 0 7px rgba(31,157,85,0);}
+    100%{box-shadow:0 0 0 0 rgba(31,157,85,0);}
+  }
+  .console-footer{
+    margin-top:16px;padding-top:14px;border-top:1px solid var(--console-line);
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#6E7688;
+    display:flex;justify-content:space-between;
+  }
+  @media (prefers-reduced-motion:reduce){ .status-dot{animation:none;} }
+
+  /* ---------- section shell ---------- */
+  section{padding:76px 0;}
+  .section-head{margin-bottom:40px;max-width:60ch;}
+  .section-head .eyebrow{margin-bottom:14px;}
+  .section-head h2{font-size:30px;font-weight:700;margin-bottom:10px;}
+  .section-head p{color:var(--muted);font-size:15px;}
+  section#about{border-top:1px solid var(--line);}
+  section#skills{border-top:1px solid var(--line);background:var(--surface);}
+  section#projects{border-top:1px solid var(--line);}
+  section#experience{border-top:1px solid var(--line);background:var(--surface);}
+  section#certs{border-top:1px solid var(--line);}
+  section#contact{border-top:1px solid var(--line);background:var(--console);color:#E7EAF0;}
+
+  /* ---------- about ---------- */
+  .about-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:52px;}
+  @media (max-width:860px){ .about-grid{grid-template-columns:1fr;} }
+  .about-grid p{color:var(--muted);font-size:15.5px;margin-bottom:16px;max-width:56ch;}
+  .fact-list{display:flex;flex-direction:column;gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface);}
+  .fact{
+    display:flex;justify-content:space-between;gap:16px;
+    padding:16px 18px;border-bottom:1px solid var(--line);font-size:13.5px;
+  }
+  .fact:last-child{border-bottom:none;}
+ .fact .k{color:var(--muted);flex-shrink:0;}
+  .fact .v{font-weight:500;text-align:right;}
+  .fact.chips{align-items:flex-start;}
+  .fact-chip-row{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end;}
+  .fact-chip{
+    font-size:11.5px;font-family:'IBM Plex Mono',monospace;
+    padding:4px 8px;border-radius:5px;background:var(--blue-dim);color:var(--blue);
+    white-space:nowrap;
+  }
+  .region-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;}
+  .region-tag{
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;
+    padding:5px 9px;border-radius:6px;background:var(--amber-dim);color:var(--amber);
+  }
+
+  /* ---------- skills ---------- */
+  .skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  @media (max-width:860px){ .skills-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .skills-grid{grid-template-columns:1fr;} }
+  .skill-card{
+    border:1px solid var(--line);border-radius:12px;padding:18px 18px 16px;background:var(--bg);
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .skill-card:hover{border-color:var(--blue);transform:translateY(-2px);}
+  .skill-card .cat{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--blue);
+    letter-spacing:.04em;margin-bottom:10px;display:block;
+  }
+  .skill-card h3{font-size:16.5px;margin-bottom:10px;}
+  .skill-tags{display:flex;flex-wrap:wrap;gap:6px;}
+  .tag{
+    font-size:12px;font-family:'IBM Plex Mono',monospace;
+    padding:4px 8px;border-radius:5px;background:var(--surface);border:1px solid var(--line);color:var(--muted);
+  }
+
+  /* ---------- projects ---------- */
+  .project-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+  @media (max-width:760px){ .project-grid{grid-template-columns:1fr;} }
+  .project-card{
+    position:relative;
+    background:var(--surface);border:1px solid var(--line);border-radius:12px;
+    padding:22px 22px 20px 24px;overflow:hidden;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .project-card:hover{transform:translateY(-3px);box-shadow:0 16px 30px -20px rgba(20,24,31,.25);}
+  .project-card::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:4px;
+    background:var(--bar-color,var(--blue));
+  }
+  .project-card .tag-eyebrow{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:8px;display:block;
+  }
+  .project-card h3{font-size:17.5px;margin-bottom:8px;}
+  .project-card p{color:var(--muted);font-size:14px;margin-bottom:14px;}
+  .chip-row{display:flex;flex-wrap:wrap;gap:6px;}
+  .chip{
+    font-size:11.5px;font-family:'IBM Plex Mono',monospace;
+    padding:3px 8px;border-radius:5px;background:var(--bg);border:1px solid var(--line);color:var(--muted);
+  }
+
+  /* ---------- experience ---------- */
+  .timeline{position:relative;padding-left:28px;}
+  .timeline::before{
+    content:"";position:absolute;left:6px;top:6px;bottom:6px;width:1px;background:var(--line-strong);
+  }
+  .tl-item{position:relative;padding-bottom:40px;}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-item::before{
+    content:"";position:absolute;left:-28px;top:4px;width:11px;height:11px;border-radius:50%;
+    background:var(--surface);border:2px solid var(--blue);
+  }
+  .tl-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-bottom:6px;}
+  .tl-head h3{font-size:18px;}
+  .tl-head .dates{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);white-space:nowrap;}
+  .tl-item .company{color:var(--blue);font-size:14px;font-weight:500;margin-bottom:10px;}
+  .tl-item ul{list-style:none;display:flex;flex-direction:column;gap:8px;}
+  .tl-item li{position:relative;padding-left:16px;color:var(--muted);font-size:14.5px;}
+  .tl-item li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;background:var(--green);border-radius:50%;}
+
+  /* ---------- certifications ---------- */
+  .cert-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  @media (max-width:760px){ .cert-grid{grid-template-columns:1fr;} }
+  .cert-card{
+    display:flex;gap:14px;align-items:flex-start;
+    border:1px solid var(--line);border-radius:12px;padding:18px;background:var(--surface);
+  }
+  .cert-badge{
+    flex-shrink:0;width:38px;height:38px;border-radius:9px;
+    background:var(--blue-dim);color:var(--blue);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:12px;
+  }
+  .cert-card h3{font-size:15px;margin-bottom:4px;}
+  .cert-card p{font-size:12.5px;color:var(--muted);}
+
+  /* ---------- contact ---------- */
+  .contact-inner{text-align:center;padding:20px 0 8px;}
+  .contact-inner .eyebrow{background:rgba(255,255,255,0.08);color:#B9C2D0;}
+  .contact-inner h2{font-size:32px;margin-bottom:14px;color:#fff;}
+  .contact-inner p{color:#9AA4B2;max-width:50ch;margin:0 auto 32px;font-size:15px;}
+  .contact-btns{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;}
+  .contact-btns .btn.primary{background:var(--blue);border-color:var(--blue);}
+  .contact-btns .btn.ghost{background:transparent;color:#E7EAF0;border-color:var(--console-line);}
+  .contact-btns .btn.ghost:hover{border-color:#8892A3;}
+  footer.foot{
+    text-align:center;padding:26px 0 34px;font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;color:#5A6272;
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand"><span class="dot"></span>Ken Rodriguez</div>
+    <nav class="links">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#certs">Certifications</a>
+    </nav>
+    <a class="nav-cta" href="#contact">Get in touch</a>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="reveal in">
+      <span class="eyebrow"><span class="status-dot"></span>AVAILABLE FOR NEW ROLES</span>
+      <h1>Ken Rodriguez</h1>
+      <div class="role">Senior Microsoft 365 Administrator</div>
+      <p class="tagline">I specialize in Microsoft 365, cloud, identity, endpoint management, and security, with hands-on experience across Intune, Apple Business Manager, Entra ID, Purview, and Conditional Access. I also provide L3 technical support, troubleshooting complex incidents and escalations to deliver secure, reliable, and scalable IT solutions..</p>
+      <div class="btn-row">
+        <a class="btn primary" href="https://www.linkedin.com/in/ken-rodriguez-5707ab235" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a class="btn ghost" href="mailto:kenrod294@gmail.com">Email me</a>
+        <a class="btn ghost" href="https://drive.google.com/file/d/1LTdDCpnZ0FO8P8WopTpJVv-R2ReS3e52/view?usp=sharing" target="_blank" rel="noopener">Download Resume</a>
+      </div>
+    </div>
+
+    <div class="reveal in">
+      <div class="console">
+        <div class="console-head">
+          <span class="title">tenant_overview.status</span>
+          <div class="traffic"><span></span><span></span><span></span></div>
+        </div>
+        <div class="console-row">
+          <span class="label"><span class="status-dot"></span>YEARS IN IT</span>
+          <span class="val">6</span>
+        </div>
+        <div class="console-row">
+          <span class="label">REGIONS SUPPORTED</span>
+          <span class="val">APAC · EMEA · AMER</span>
+        </div>
+        <div class="console-row">
+          <span class="label">PLATFORMS</span>
+          <span class="val"> Windows · macOS · iOS</span>
+        </div>
+        <div class="console-row">
+          <span class="label">SUPPORT LEVEL</span>
+          <span class="val">L2 · L3</span>
+        </div>
+        <div class="console-row">
+          <span class="label">ENVIRONMENT</span>
+          <span class="val">M365 · Intune · Entra ID</span>
+        </div>
+        <div class="console-footer">
+          <span>last_sync: just now</span>
+          <span>role: senior_admin</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section id="about">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">01 · ABOUT</span>
+      <h2>Enterprise IT, run like it's mission-critical</h2>
+    </div>
+    <div class="about-grid reveal">
+      <div>
+        <p>I'm a Senior Microsoft 365 Administrator with 6 years of experience across managed service provider (MSP) and enterprise environments, supporting users, endpoints, and infrastructure across APAC, AMER and EMEA.</p>
+        <p>My day-to-day work centers on the Microsoft ecosystem — Microsoft 365, Intune, Entra ID, and Azure — alongside Apple device management. I also provide L3 technical support, handling complex incidents and escalations across identity, endpoints, cloud services, and security.</p>
+        <p>I care most about environments that are secure by default, well-documented, and boring in the best way: predictable, compliant, reliable, and easy for the next admin to pick up.</p>
+      </div>
+      <div>
+        <div class="fact-list">
+          <div class="fact chips">
+            <span class="k">Experience</span>
+            <div class="fact-chip-row">
+              <span class="fact-chip">6 years, IT / MSP</span>
+            </div>
+          </div>
+          <div class="fact chips">
+            <span class="k">Regions</span>
+            <div class="fact-chip-row">
+              <span class="fact-chip">APAC</span>
+              <span class="fact-chip">EMEA</span>
+<span class="fact-chip">AMER</span>
+            </div>
+          </div>
+          <div class="fact chips">
+            <span class="k">Core stack</span>
+            <div class="fact-chip-row">
+              <span class="fact-chip">Microsoft 365</span>
+              <span class="fact-chip">Intune</span>
+              <span class="fact-chip">Entra ID</span>
+              <span class="fact-chip">Technical Support</span>
+              <span class="fact-chip">Purview</span>
+              <span class="fact-chip">Conditional Access</span>
+            </div>
+          </div>
+          <div class="fact chips">
+            <span class="k">Also manage</span>
+            <div class="fact-chip-row">
+              <span class="fact-chip">Azure</span>
+              <span class="fact-chip">Apple Business Manager</span>
+              <span class="fact-chip">AD and Windows Server</span>
+              <span class="fact-chip">Network</span>
+            </div>
+          </div>
+        </div>
+        <div class="region-tags">
+          <span class="region-tag">MSP EXPERIENCE</span>
+          <span class="region-tag">MULTI-TENANT</span>
+          <span class="region-tag">CROSS-TIMEZONE</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= SKILLS ================= -->
+<section id="skills">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">02 · TECHNICAL SKILLS</span>
+      <h2>The stack I operate day to day</h2>
+      <p>Grouped the way I actually work with it — identity, endpoints, security, and the tooling that ties it together.</p>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <span class="cat">PRODUCTIVITY</span>
+        <h3>Microsoft 365</h3>
+        <div class="skill-tags">
+          <span class="tag">Exchange Online</span>
+          <span class="tag">SharePoint</span>
+          <span class="tag">Teams</span>
+          <span class="tag">Admin Center</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <span class="cat">ENDPOINT</span>
+        <h3>Intune</h3>
+        <div class="skill-tags">
+          <span class="tag">Compliance policies</span>
+          <span class="tag">App deployment</span>
+          <span class="tag">Autopilot</span>
+<span class="tag">Configuration Profile</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <span class="cat">IDENTITY</span>
+        <h3>Entra ID / Azure</h3>
+        <div class="skill-tags">
+          <span class="tag">Conditional Access</span>
+          <span class="tag">Hybrid join</span>
+          <span class="tag">Azure infra</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <span class="cat">APPLE FLEET</span>
+        <h3>Apple Business Manager</h3>
+        <div class="skill-tags">
+          <span class="tag">DEP / ADE</span>
+          <span class="tag">macOS profiles</span>
+          <span class="tag">App VPP</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <span class="cat">PLATFORMS</span>
+        <h3>macOS / Windows</h3>
+        <div class="skill-tags">
+          <span class="tag">Imaging</span>
+          <span class="tag">Patch mgmt</span>
+          <span class="tag">Troubleshooting</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <span class="cat">SECURITY</span>
+        <h3>Defender / Purview / Sentinel</h3>
+        <div class="skill-tags">
+          <span class="tag">DLP</span>
+          <span class="tag">Threat mgmt</span>
+          <span class="tag">SIEM basics</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <span class="cat">AUTOMATION</span>
+        <h3>PowerShell</h3>
+        <div class="skill-tags">
+          <span class="tag">Graph API</span>
+          <span class="tag">Scripted remediation</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <span class="cat">SERVICE OPS</span>
+        <h3>ITSM / ServiceNow / Jira</h3>
+        <div class="skill-tags">
+          <span class="tag">Ticketing</span>
+          <span class="tag">SLA management</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <span class="cat">GOVERNANCE</span>
+        <h3>Conditional Access / Security</h3>
+        <div class="skill-tags">
+          <span class="tag">Zero Trust</span>
+          <span class="tag">MFA policy</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROJECTS ================= -->
+<section id="projects">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">03 · FEATURED PROJECTS</span>
+      <h2>Deployments and initiatives I've led</h2>
+    </div>
+    <div class="project-grid">
+      <div class="project-card reveal" style="--bar-color:#3457D5">
+        <span class="tag-eyebrow">ENDPOINT · APPLE</span>
+        <h3>macOS + Intune + ABM Deployment</h3>
+        <p>Stood up zero-touch provisioning for a fleet of macOS devices using Apple Business Manager and Intune, cutting manual setup time and standardizing configuration across the fleet.</p>
+        <div class="chip-row"><span class="chip">ABM</span><span class="chip">Intune</span><span class="chip">macOS</span></div>
+      </div>
+      <div class="project-card reveal" style="--bar-color:#1F9D55">
+        <span class="tag-eyebrow">PRODUCTIVITY</span>
+        <h3>Microsoft 365 Administration</h3>
+        <p>Owned day-to-day M365 tenant administration for a multi-region user base, including licensing, mailbox management, and Teams/SharePoint governance.</p>
+        <div class="chip-row"><span class="chip">Exchange</span><span class="chip">SharePoint</span><span class="chip">Teams</span></div>
+      </div>
+      <div class="project-card reveal" style="--bar-color:#C7852A">
+        <span class="tag-eyebrow">SECURITY</span>
+        <h3>Microsoft Purview / DLP</h3>
+        <p>Rolled out data loss prevention policies across the tenant to control sensitive data movement, reducing exposure risk without disrupting day-to-day workflows.</p>
+        <div class="chip-row"><span class="chip">Purview</span><span class="chip">DLP</span><span class="chip">Compliance</span></div>
+      </div>
+      <div class="project-card reveal" style="--bar-color:#3457D5">
+        <span class="tag-eyebrow">ENDPOINT · SECURITY</span>
+        <h3>Endpoint Security & Compliance</h3>
+        <p>Built and enforced device compliance baselines across Windows and macOS, tying non-compliant devices to Conditional Access to keep unmanaged devices off corporate resources.</p>
+        <div class="chip-row"><span class="chip">Defender</span><span class="chip">Compliance policy</span></div>
+      </div>
+      <div class="project-card reveal" style="--bar-color:#1F9D55">
+        <span class="tag-eyebrow">IDENTITY</span>
+        <h3>SSO Implementation</h3>
+        <p>Implemented single sign-on across core business applications through Entra ID, simplifying access for end users while tightening authentication controls.</p>
+        <div class="chip-row"><span class="chip">Entra ID</span><span class="chip">SSO</span><span class="chip">SAML</span></div>
+      </div>
+      <div class="project-card reveal" style="--bar-color:#C7852A">
+        <span class="tag-eyebrow">INFRASTRUCTURE</span>
+        <h3>Azure Infrastructure</h3>
+        <p>Supported core Azure infrastructure alongside the M365 tenant, bridging identity, endpoint, and cloud infrastructure work into one coherent environment.</p>
+        <div class="chip-row"><span class="chip">Azure</span><span class="chip">Infra</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EXPERIENCE ================= -->
+<section id="experience">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">04 · WORK EXPERIENCE</span>
+      <h2>Where I've done this work</h2>
+    </div>
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <div class="tl-head">
+          <h3>Senior Microsoft 365 Administrator</h3>
+          <span class="dates mono">March 2025 — July 2026</span>
+        </div>
+        <div class="company">Elevate · [Philippines / Remote]</div>
+        <ul>
+          <li>Owned the ABM / Intune Automated Device Enrollment initiative end-to-end — from solution design through org-wide rollout — establishing the company's macOS enrollment standard.
+.</li>
+          <li>Led the Jira ticket automation project from the ground up, building workflows and JQL queries that streamlined IT service delivery for the whole team.
+</li>
+          <li>Directed the organization's technical SOP program, setting documentation standards later adopted across IT operations.
+</li>
+         <li>Led design and rollout of Conditional Access, DLP, and Compliance Policy frameworks across the enterprise, raising the org's security posture.
+</li>
+          <li>Act as the escalation contact for complex and critical technical issues across the IT team, resolving cases other admins couldn't close.
+</li>
+
+<li>Serve as Global Administrator for the enterprise Microsoft 365 environment (Entra ID, Intune, Azure, Exchange Online, SharePoint, Teams, Defender, Purview), setting the standard for identity and device management across the organization.
+
+</li>
+          <li>Built the organization's Microsoft 365 tenant from scratch — configuring global policies, licensing, and security baselines that the org still runs on today.
+</li>
+        <li>Lead procurement of company IT assets, coordinating with vendors from request through delivery and deployment.
+</li>
+          <li>Work closely with third-party vendors and serve as the assigned lead on due-diligence reviews for new software procurement, evaluating security, compliance, and integration fit before approval.
+</li>
+
+        </ul>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-head">
+          <h3>Microsoft 365 Support Specialist</h3>
+          <span class="dates mono">June 2024 — January 2025</span>
+        </div>
+        <div class="company">Rhipe · [MSP / Philippines]</div>
+        <ul>
+          <li>Acted as an escalation point for other IT administrators on Exchange, SharePoint, Teams, and Azure issues, resolving complex technical 
+and security cases. </li>
+          <li>Led planning and execution of data and cloud migration projects, coordinating timelines to ensure smooth transitions with minimal 
+business disruption.</li>
+  <li>Authored technical documentation and SOPs supporting compliance and knowledge continuity across the team. </li>
+          <li>Owned end-to-end onboarding and offboarding processes, managing account provisioning, licensing, and access lifecycle. </li>
+        </ul>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-head">
+          <h3>Senior System Analyst</h3>
+          <span class="dates mono">August 2022 — June 2024</span>
+        </div>
+        <div class="company">GPM</div>
+        <ul>
+          <li>Managed global Active Directory, Windows Server and Microsoft 365 administration for the organization, including account creation, licensing, and 
+access management. </li>
+          <li>Led the domain migration to Microsoft Exchange and the SharePoint/OneDrive migration project. </li>
+ <li>Owned monthly workforce/IT reporting to Global HR via the Cornerstone HRIS system, supporting cross-functional planning. </li>
+          <li>Managed IT procurement, asset inventory, and VPN infrastructure (GlobalProtect, SonicWall) for the organization. </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CERTIFICATIONS ================= -->
+<section id="certs">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">05 · CERTIFICATIONS</span>
+      <h2>Credentials on file</h2>
+    </div>
+    <div class="cert-grid">
+      <div class="cert-card reveal">
+        <div class="cert-badge">MS</div>
+        <div>
+          <h3>Microsoft 365 Fundamentals (MS-900)</h3>
+          <p>Microsoft · [2024]</p>
+        </div>
+      </div>
+     
+     
+       
+      
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact">
+  <div class="wrap contact-inner reveal">
+    <span class="eyebrow"><span class="status-dot"></span>OPEN TO OPPORTUNITIES</span>
+    <h2>Let's talk about your environment</h2>
+    <p>Let’s build better IT environments together.
+
+From Microsoft 365 administration and endpoint management to security, cloud operations, and L3 technical support, I’m passionate about solving complex IT challenges and delivering secure, reliable, and scalable solutions.
+.</p>
+    <div class="contact-btns">
+      <a class="btn primary" href="https://www.linkedin.com/in/ken-rodriguez-5707ab235" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a class="btn ghost" href="mailto:kenrod294@gmail.com">kenrod294@gmail.com</a>
+      <a class="btn ghost" href="https://drive.google.com/file/d/1LTdDCpnZ0FO8P8WopTpJVv-R2ReS3e52/view?usp=sharing" target="_blank" rel="noopener">Download Resume</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">© <span id="year"></span> Ken Rodriguez · Built with care for uptime.</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => io.observe(el));
+  } else {
+    revealEls.forEach(el => el.classList.add('in'));
+  }
+</script>
+
+</body>
+</html>
